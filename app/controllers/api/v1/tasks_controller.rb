@@ -1,6 +1,7 @@
 class Api::V1::TasksController < ApplicationController
     def index
-        render json: Task.all
+        tasks = Task.all
+        render json: TaskSerializer.format_tasks(tasks)
     end
     
     def show
@@ -19,15 +20,9 @@ class Api::V1::TasksController < ApplicationController
         render json: Task.delete(params[:id])
     end
     
-    def index
-        binding.pry
-        tasks = Task.all
-        render json: TaskSerializer.format_tasks(tasks)
-    end
-
     private
 
-    def task_params
+    def task_params # this method isn't an action 
         params.require(:task).permit(:title, :description)
     end
 end
